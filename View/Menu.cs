@@ -25,6 +25,18 @@ namespace Auction.View
             WriteLine();
             WriteLine(HEADING);
         }
-        public bool ValidOption (out IDisplay opt) {}
+        public bool ValidOption(out IDisplay opt)
+        {
+            int optionID;
+            WriteLine(optionID);
+            return false;
+        }
+        public override void Display() {
+            while (true) {
+                ShowOptions();
+                IDisplay opt;
+                ValidOption(out opt);
+            }
+        }
     }
 }
