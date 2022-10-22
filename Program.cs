@@ -1,4 +1,9 @@
 ﻿using static System.Console;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using System.Collections.Generic;
+using System.Collections.Generic;
 using Auction.Model;
 namespace Auction
 {
@@ -6,9 +11,8 @@ namespace Auction
     {
         public static void Main(string[] args)
         {
-            ProductStorage products = new ProductStorage("products.xml");
             ClientStorage clients = new ClientStorage("data.xml");
-            
+            // Client client
         }
     }
 }
