@@ -25,10 +25,18 @@ namespace Auction.Model
                 return amount;
             }
             catch (ArgumentOutOfRangeException e) {
-                return $"-\t -\t -";
+                return $"\t-\t -\t -";
             }
-
-
+        }
+        public decimal GetMaxAmount() {
+            try
+            {
+                decimal amount = bidItems[bidItems.Count - 1].BidAmount;
+                return amount;
+            }
+            catch (ArgumentOutOfRangeException e) {
+                return 0.0M;
+            }
         }
         public BiddingStorage()
         {

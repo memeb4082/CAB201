@@ -14,15 +14,15 @@ namespace Auction.Model
         private string fileName;
         public override string ToString()
         {
-            string output = "Item #\t Product Name\t Description\t List Price\t Bidder name\t Bidder Email\t Bid amt\n";
+            string output = "Item #\t Product name\t Description\t List Price\t Bidder name\t Bidder email\t Bid amt\n";
             for (int i = 0; i < products.Count; i++)
             {
-                // TODO: Add more vars
                 output += $"{i + 1}\t {products[i].ToString()}\n";
             }
             return output;
         }
-        public Client Client {
+        public Client Client
+        {
             get { return client; }
             set { client = value; }
         }
@@ -87,16 +87,20 @@ namespace Auction.Model
             }
             return output;
         }
-        public List<ProductDetails> SearchProducts(string sellerEmail, string searchPhrase)
+        public List<ProductDetails> SearchProducts(string searchPhrase)
         {
+            string sellerEmail = client.Email;
             List<ProductDetails> output = new List<ProductDetails>();
             foreach (ProductDetails product in products)
             {
-                if (!product.Search(searchPhrase) || searchPhrase == "ALL")
+                if (searchPhrase == "ALL")
                 {
                     output.Add(product);
                 }
-                else { }
+                else if (product.Search(searchPhrase))
+                {
+                    output.Add(product);
+                }
             }
             return output;
         }

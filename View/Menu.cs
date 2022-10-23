@@ -34,7 +34,7 @@ namespace Auction.View
         {
             int index;
             index = CustomInput.CustomInt($"Please select an option between {1} and {options.Length}", $"Option must be between 1 and {options.Length + 1}");
-            while ((1 < index) && (index < options.Length))
+            while ((1 > index) || (options.Length < index))
             {
                 index = CustomInput.CustomInt($"Please select an option between {1} and {options.Length}", $"Option must be between 1 and {options.Length + 1}");
             }
