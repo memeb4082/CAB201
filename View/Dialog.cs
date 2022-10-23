@@ -8,7 +8,10 @@ namespace Auction.View
         public string Title { get; }
         protected ProductStorage Products { get; }
         protected ClientStorage Clients { get; }
-        public Dialog (string Title, ProductStorage Products, ClientStorage Clients) {
+        public Dialog(string Title,
+                ProductStorage Products,
+                ClientStorage Clients)
+        {
             this.Title = Title;
             this.Products = Products;
             this.Clients = Clients;

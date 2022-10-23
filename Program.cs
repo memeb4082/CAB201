@@ -7,10 +7,14 @@ namespace Auction
     {
         public static void Main(string[] args)
         {
-            ProductStorage products = new ProductStorage("products.xml");
-            ClientStorage clients = new ClientStorage("data.xml");
-            MainMenu menu = new MainMenu(products, clients);
-            menu.Display();
+            WriteLine($"+------------------------------+\n| Welcome to the Auction House |\n+------------------------------+");
+            ProductStorage Products = new ProductStorage("products.xml");
+            ClientStorage Clients = new ClientStorage("data.xml");
+            MainMenu Menu = new MainMenu(
+                Products, 
+                Clients
+            );
+            Menu.Display();
         }
     }
 }

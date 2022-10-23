@@ -5,6 +5,13 @@ namespace Auction.View
 {
     public class CustomInput
     {
+        public static void CustomTitle(string title) {
+            WriteLine($"\n{title}\n{new string('-', title.Length)}\n");
+        }
+        public static string Read() {
+            Write("> ");
+            return ReadLine();
+        }
         public static string CustomPassword()
         {
             string password;
@@ -20,7 +27,7 @@ namespace Auction.View
 * At least one lower-case letter
 * At least one digit
 * At least one special character");
-                password = ReadLine();
+                password = Read();
                 MatchCollection match = re.Matches(password);
                 if (match.Count == 0)
                 {
@@ -43,7 +50,7 @@ namespace Auction.View
                 {
                     WriteLine(prompt);
                 }
-                input = ReadLine();
+                input = Read();
                 MatchCollection match = re.Matches(input);
                 if (match.Count == 0)
                 {
@@ -62,7 +69,7 @@ namespace Auction.View
             while (true)
             {
                 WriteLine(prompt);
-                input = ReadLine();
+                input = Read();
                 if (!int.TryParse(input, out output))
                 {
                     WriteLine(error);
@@ -78,7 +85,7 @@ namespace Auction.View
             while (true)
             {
                 WriteLine(prompt);
-                input = ReadLine();
+                input = Read();
                 int i = options_lower.IndexOf(input.ToLower());
                 if (i == -1)
                 {
@@ -95,7 +102,7 @@ namespace Auction.View
             while (true)
             {
                 WriteLine(prompt);
-                if (!int.TryParse(ReadLine(), out input))
+                if (!int.TryParse(Read(), out input))
                 {
                     WriteLine("Input is not a valid integer");
                     continue;
@@ -117,7 +124,7 @@ namespace Auction.View
             while (true)
             {
                 WriteLine(prompt);
-                input = ReadLine();
+                input = Read();
 
                 Match match = re.Match(input);
                 if (match.Success)
@@ -141,7 +148,7 @@ namespace Auction.View
                 DateTime output;
                 string input;
                 WriteLine(prompt);
-                input = ReadLine();
+                input = Read();
                 if (DateTime.TryParseExact(input,
                         dateFormat,
                         CultureInfo.CurrentCulture,

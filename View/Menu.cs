@@ -12,20 +12,23 @@ namespace Auction.View
             ProductStorage Products,
             ClientStorage Clients,
             params IDisplayable[] options
-            ) : base(Title, Products, Clients)
+        ) : base(
+            Title, 
+            Products, 
+            Clients
+        )
         {
             this.options = options;
             this.Heading = $"Please enter an option between 1 and {options.Length}";
         }
         private void WriteOptions()
         {
-            WriteLine();
-            WriteLine(Title);
-            // WriteLine(new string('-', Title.Length));
+            CustomInput.CustomTitle(Title);
             for (int i = 0; i < options.Length; i++)
             {
                 WriteLine($"({i + 1}) {options[i].Title}");
             }
+            WriteLine();
         }
         private int GetOption()
         {

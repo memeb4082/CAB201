@@ -9,6 +9,7 @@ namespace Auction.Model
 {
     public class ProductStorage
     {
+        Client client;
         List<ProductDetails> products = new List<ProductDetails>();
         private string fileName;
         public override string ToString()
@@ -21,12 +22,15 @@ namespace Auction.Model
             }
             return output;
         }
+        public Client Client {
+            get { return client; }
+            set { client = value; }
+        }
         public ProductStorage(string fileName)
         {
             this.fileName = fileName;
             Load();
         }
-
         private void Load()
         {
             if (!File.Exists(fileName))

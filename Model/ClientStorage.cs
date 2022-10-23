@@ -93,6 +93,8 @@ namespace Auction.Model
                 );
                 doc.Save(fileName);
             }
+            CustomInput.CustomTitle($"Client {client.Name}({client.Email}) has successfully registered at the Auction house.");
+            
         }
         public Client Login()
         {

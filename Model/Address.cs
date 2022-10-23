@@ -19,7 +19,7 @@ namespace Auction.Model
         public int? UnitNum
         {
             get { return unitNum; }
-            set
+            private set
             {
                 if (value == 0)
                 {
@@ -31,6 +31,7 @@ namespace Auction.Model
                 }
                 else
                 {
+                    unitNum = -1;
                     WriteLine("Unit number must be a non-negative integer");
                 }
             }
@@ -38,7 +39,7 @@ namespace Auction.Model
         public int StreetNum
         {
             get { return streetNum; }
-            set
+            private set
             {
                 if (value > 0)
                 {
@@ -50,6 +51,7 @@ namespace Auction.Model
                 }
                 else
                 {
+                    streetNum = -1;
                     Console.WriteLine("Street number must be greater than zero");
                 }
             }
@@ -57,7 +59,7 @@ namespace Auction.Model
         public string StreetName
         {
             get { return streetName; }
-            set
+            private set
             {
                 if (value.Length > 0)
                 {
@@ -72,7 +74,7 @@ namespace Auction.Model
         public string StreetSuffix
         {
             get { return streetSuffix; }
-            set
+            private set
             {
                 if (streetSuffixesList.Contains(value, StringComparer.OrdinalIgnoreCase))
                 {
@@ -87,7 +89,7 @@ namespace Auction.Model
         public string City
         {
             get { return city; }
-            set
+            private set
             {
                 if (value.Length > 0)
                 {
@@ -102,7 +104,7 @@ namespace Auction.Model
         public int PostCode
         {
             get { return postCode; }
-            set
+            private set
             {
                 if (1000 <= value && value <= 9999)
                 {
@@ -110,6 +112,7 @@ namespace Auction.Model
                 }
                 else
                 {
+                    postCode = -1;
                     Console.WriteLine("Postcode must be a 4 digit integer");
                 }
             }
@@ -117,7 +120,7 @@ namespace Auction.Model
         public string State
         {
             get { return state; }
-            set
+            private set
             {
                 if (statesList.Contains(value, StringComparer.OrdinalIgnoreCase))
                 {
@@ -146,12 +149,13 @@ namespace Auction.Model
         }
         public Address()
         {
-
-            while (unitNum == null)
+            this.unitNum = CustomInput.CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
+            while (UnitNum == -1)
             {
                 this.UnitNum = CustomInput.CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
             }
-            while (streetNum == null)
+            this.streetNum = CustomInput.CustomInt("Street number:", "\tStreet number must be a positive integer");
+            while (StreetNum == -1)
             {
                 this.StreetNum = CustomInput.CustomInt("Street number:", "\tStreet number must be a positive integer");
             }
@@ -159,8 +163,9 @@ namespace Auction.Model
             streetName = CustomInput.CustomString("Street name", "^(?!\\s*$).+");
             streetSuffix = CustomInput.CustomString($"Street suffix:)", "");
             city = CustomInput.CustomString("City:", "^(?!\\s*$).+");
-            state = CustomInput.CustomOption($"State (ACT, NSW, NT, QLD, SA, TAS, VIC, WA):", statesList); ;
-            while (postCode == null)
+            state = CustomInput.CustomOption($"State (ACT, NSW, NT, QLD, SA, TAS, VIC, WA):", statesList);
+            this.PostCode = CustomInput.CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
+            while (PostCode == -1)
             {
                 this.PostCode = CustomInput.CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
             }

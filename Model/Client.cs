@@ -40,10 +40,8 @@ namespace Auction.Model
         }
         public Client()
         {
-            // TODO: FIX REGEX EMAIL
             this.name = CustomInput.CustomString("Please enter username (must not be empty)", @"^(?!\s*$).+");
             this.email = CustomInput.CustomString("Please enter email", @"^[A-Za-z0-9]+([\.]?[A-Za-z0-9]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
-            // this.email = CustomInput.CustomString("Please enter email", @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
             this.password = CustomInput.CustomPassword();
         }
         internal Client(string name, string email, string password)
