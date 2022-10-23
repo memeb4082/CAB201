@@ -6,10 +6,11 @@ namespace Auction.View {
             TITLE,
             Products,
             Clients,
-            new AdvertiseProduct(Products, Clients)
-            // ViewProducts(Products, Clients),
-            // SearchProducts(Products, Clients),
-            // ViewBids(Products, Clients)
+            new AdvertiseProduct(Products, Clients),
+            new ViewProducts(Products, Clients),
+            new SearchProducts(Products, Clients),
+            new ViewBids(Products, Clients),
+            new ViewPurchased(Products, Clients)
         ) {
 
         }

@@ -1,9 +1,9 @@
 using Auction.Model;
-
+using static Auction.View.CustomInput;
 namespace Auction.View {
-    public class SearchProducts : Dialog {
-        const string TITLE = "Search for Advertised Products";
-        public SearchProducts(
+    public class ViewPurchased : Dialog {
+        const string TITLE = "View My Purchased Items";
+        public ViewPurchased(
             ProductStorage Products,
             ClientStorage Clients
         ) : base(
@@ -12,5 +12,5 @@ namespace Auction.View {
             Clients
         ) {}
         public override void Display() {}
-    } 
+    }
 }

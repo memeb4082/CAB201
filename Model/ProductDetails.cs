@@ -72,7 +72,7 @@ namespace Auction.Model
         }
         public override string ToString()
         {
-            return $"{name}\t {description}\t {price}\n";
+            return $"{(name)}\t {description}\t ${price}\t {bids.GetMax()}";
         }
         internal bool Search(string phrase) {
             phrase = phrase.ToLower();

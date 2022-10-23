@@ -6,7 +6,7 @@ namespace Auction.View
     public class CustomInput
     {
         public static void CustomTitle(string title) {
-            WriteLine($"\n{title}\n{new string('-', title.Length)}\n");
+            WriteLine($"{title}\n{new string('-', title.Length)}");
         }
         public static string Read() {
             Write("> ");

@@ -2,12 +2,12 @@ using Auction.Model;
 using static Auction.View.CustomInput;
 namespace Auction.View {
     public class AdvertiseProduct : Dialog {
-        const string Title = "Advertise Product";
+        const string TITLE = "Advertise Product";
         public AdvertiseProduct(
             ProductStorage Products,
             ClientStorage Clients
         ) : base(
-            Title,
+            TITLE,
             Products,
             Clients
         ) {}

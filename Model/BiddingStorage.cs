@@ -17,15 +17,15 @@ namespace Auction.Model
                 bidItems = value;
             }
         }
-        public decimal? GetMax()
+        public string GetMax()
         {
             try
             {
-                decimal amount = bidItems[bidItems.Count - 1].BidAmount;
+                string amount = bidItems[bidItems.Count - 1].ToString();
                 return amount;
             }
             catch (ArgumentOutOfRangeException e) {
-                return null;
+                return $"-\t -\t -";
             }
 
 

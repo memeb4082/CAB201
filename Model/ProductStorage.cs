@@ -14,7 +14,7 @@ namespace Auction.Model
         private string fileName;
         public override string ToString()
         {
-            string output = "Item #\t Product Name\t Description\t List Price\t Bidder name\n Bidder Email\t Bid amt\n";
+            string output = "Item #\t Product Name\t Description\t List Price\t Bidder name\t Bidder Email\t Bid amt\n";
             for (int i = 0; i < products.Count; i++)
             {
                 // TODO: Add more vars
