@@ -24,6 +24,7 @@ namespace Auction.Model
             if (!File.Exists(fileName))
             {
                 new XDocument(
+                    new XDeclaration("1.0", "utf-8", "yes"),
                     new XElement("Clients")
                 )
                 .Save(fileName);

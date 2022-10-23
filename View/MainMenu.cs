@@ -1,6 +1,5 @@
 using System;
 using Auction.Model;
-
 namespace Auction.View
 {
     public class MainMenu : Menu

@@ -17,6 +17,8 @@ namespace Auction.View {
         {
             Client client = Clients.Login();
             Products.Client = client;
+            Menu AuctionMenu = new AuctionMenu(Products, Clients);
+            AuctionMenu.Display();
         }
     }
 }
