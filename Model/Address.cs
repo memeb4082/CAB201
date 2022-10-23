@@ -31,7 +31,7 @@ namespace Auction.Model
                 }
                 else
                 {
-                    WriteLine("Unit number must be greater than or equal to 0");
+                    WriteLine("Unit number must be a non-negative integer");
                 }
             }
         }
@@ -43,6 +43,10 @@ namespace Auction.Model
                 if (value > 0)
                 {
                     streetNum = value;
+                }
+                else if (value < 0)
+                {
+                    Console.WriteLine("Street number must a positive integer");
                 }
                 else
                 {
@@ -142,13 +146,24 @@ namespace Auction.Model
         }
         public Address()
         {
-            this.unitNum = CustomInput.CustomInt("Unit number (0 = none):", 0, null, true);
-            this.streetNum = (int)CustomInput.CustomInt("Street number:", 0, null);
-            this.streetName = CustomInput.CustomString("Street name", "^(?!\\s*$).+");
-            this.streetSuffix = CustomInput.CustomString($"Street suffix:)", "");
-            this.city = CustomInput.CustomString("City:", "^(?!\\s*$).+");
-            this.state = CustomInput.CustomOption($"State (ACT, NSW, NT, QLD, SA, TAS, VIC, WA):", statesList); ;
-            this.postCode = (int)CustomInput.CustomInt("Postcode (1000 .. 9999)", 1000, 9999);
+
+            while (unitNum == null)
+            {
+                this.UnitNum = CustomInput.CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
+            }
+            while (streetNum == null)
+            {
+                this.StreetNum = CustomInput.CustomInt("Street number:", "\tStreet number must be a positive integer");
+            }
+
+            streetName = CustomInput.CustomString("Street name", "^(?!\\s*$).+");
+            streetSuffix = CustomInput.CustomString($"Street suffix:)", "");
+            city = CustomInput.CustomString("City:", "^(?!\\s*$).+");
+            state = CustomInput.CustomOption($"State (ACT, NSW, NT, QLD, SA, TAS, VIC, WA):", statesList); ;
+            while (postCode == null)
+            {
+                this.PostCode = CustomInput.CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
+            }
         }
 
         // public address()

@@ -55,35 +55,7 @@ namespace Auction.View
                 }
             }
         }
-        public static int? CustomInt(string prompt, int min, int? max, bool allowNull = false)
-        {
-            string input;
-            int output;
-            while (true)
-            {
-                WriteLine(prompt);
-                input = ReadLine();
-                if (allowNull == true && input == "")
-                {
-                    return null;
-                }
-                else
-                {
-                    if (!int.TryParse(input, out output))
-                    {
-                        WriteLine("Input is not valid integer");
-                        continue;
-                    }
-                    if ((output < min) || (max == null ? false : output > max))
-                    {
-                        WriteLine("Input is not within range");
-                        continue;
-                    }
-                    return output;
-                }
-            }
-        }
-        public static int CustomInt(string prompt)
+        public static int CustomInt(string prompt, string error)
         {
             string input;
             int output;
@@ -93,7 +65,7 @@ namespace Auction.View
                 input = ReadLine();
                 if (!int.TryParse(input, out output))
                 {
-                    WriteLine("Input is not valid integer");
+                    WriteLine(error);
                     continue;
                 }
                 return output;

@@ -5,3 +5,4 @@ Auction.sln
 View/testdata.txt
 bin
 obj
+*.xml

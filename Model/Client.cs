@@ -12,14 +12,23 @@ namespace Auction.Model
         private string email;
         private string password;
 
-        private Address? homeAddress;
-        private ProductStorage products;
+        private Address homeAddress;
         // Params
         public string Name
         {
             get { return name; }
         }
-        public Address HomeAddress { get; internal set; }
+        public Address HomeAddress
+        {
+            get
+            {
+                return homeAddress;
+            }
+            internal set
+            {
+                homeAddress = value;
+            }
+        }
         public string Email
         {
             get { return email.ToString(); }
@@ -36,18 +45,12 @@ namespace Auction.Model
             this.email = CustomInput.CustomString("Please enter email", @"^[A-Za-z0-9]+([\.]?[A-Za-z0-9]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
             // this.email = CustomInput.CustomString("Please enter email", @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
             this.password = CustomInput.CustomPassword();
-            this.products = new ProductStorage(email);
         }
         internal Client(string name, string email, string password)
         {
             this.name = name;
             this.email = email;
             this.password = password;
-            if (homeAddress != null)
-            {
-                this.homeAddress = homeAddress;
-            }
-            this.products = new ProductStorage(email);
         }
     }
 }
