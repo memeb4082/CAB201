@@ -1,5 +1,5 @@
 using System;
-using Auction.View;
+// using Auction.View;
 namespace Auction.Model
 {
     public class DeliverProduct : BiddingDetails

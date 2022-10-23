@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using System.Xml;
+using System.Collections.Generic;
+using static System.Console;
 using System.IO;
-using Auction.View;
+using System.Linq;
+using System.Xml.Linq;
+// using Auction.View;
 namespace Auction.Model
 {
     public class Client
@@ -11,7 +13,7 @@ namespace Auction.Model
         private string name;
         private string email;
         private string password;
-
+        private ProductStorage products;
         private Address homeAddress;
         // Params
         public string Name
@@ -37,6 +39,26 @@ namespace Auction.Model
         public string Password
         {
             get { return password; }
+        }
+        public ProductStorage Products
+        {
+            get { return products; }
+            set { products = value; }
+        }
+        public void NewProduct(ProductDetails product)
+        {
+            products.Add(product);
+            XDocument doc =  XDocument.Load("data.xml");
+            XElement account = doc.Descendants("Client")
+                .Where(arg => arg.Attribute("Email").Value == email)
+                .FirstOrDefault();
+            account.Element("Products").Add(new XElement("Product",
+                new XElement("Name", product.Name),
+                new XElement("Description", product.Description),
+                new XElement("Price", product.Price),
+                new XElement("Bids", "")
+            ));
+            doc.Save("data.xml");
         }
         public Client()
         {

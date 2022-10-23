@@ -4,14 +4,23 @@ using static System.Console;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Auction.View;
+// using Auction.View;
 namespace Auction.Model
 {
     public class ProductStorage
     {
-        Client client;
-        List<ProductDetails> products = new List<ProductDetails>();
-        private string fileName;
+        private List<ProductDetails> products = new List<ProductDetails>();
+        public List<ProductDetails> Products
+        {
+            get
+            {
+                return products;
+            }
+            private set
+            {
+                products = value;
+            }
+        }
         public override string ToString()
         {
             string output = "Item #\t Product name\t Description\t List Price\t Bidder name\t Bidder email\t Bid amt\n";
@@ -21,75 +30,8 @@ namespace Auction.Model
             }
             return output;
         }
-        public Client Client
-        {
-            get { return client; }
-            set { client = value; }
-        }
-        public ProductStorage(string fileName)
-        {
-            this.fileName = fileName;
-            Load();
-        }
-        private void Load()
-        {
-            if (!File.Exists(fileName))
-            {
-                new XDocument(
-                    new XElement("Products")
-                )
-                .Save(fileName);
-            }
-            XDocument doc = XDocument.Load(fileName);
-            if (!doc.Descendants("Products").Any())
-            {
-                doc.Add(new XElement("Products"));
-            }
-            IEnumerable<XElement> list = doc.Descendants("Products").Elements();
-            foreach (XElement el in list)
-            {
-                LoadData(el);
-            }
-        }
-        private void LoadData(XElement data)
-        {
-            string name = data.Element("Name").Value;
-            string description = data.Element("Description").Value;
-            decimal price = decimal.Parse(data.Element("Price").Value);
-            string sellerEmail = data.Element("Email").Value;
-            ProductDetails product = new ProductDetails(name, description, price, sellerEmail);
-            products.Add(product);
-        }
-        public void NewProduct(ProductDetails product)
-        {
-            products.Add(product);
-            XDocument doc = XDocument.Load(fileName);
-            doc.Element("Products").Add(
-                new XElement("Product", new XAttribute("ID", products.Count),
-                    new XElement("Email", product.SellerEmail),
-                    new XElement("Name", product.Name),
-                    new XElement("Description", product.Description),
-                    new XElement("Price", product.Price),
-                    new XElement("Bids", "")
-                )
-            );
-            doc.Save(fileName);
-        }
-        public List<ProductDetails> ShowProducts(string sellerEmail)
-        {
-            List<ProductDetails> output = new List<ProductDetails>();
-            foreach (ProductDetails product in products)
-            {
-                if (product.SellerEmail == sellerEmail)
-                {
-                    output.Add(product);
-                }
-            }
-            return output;
-        }
         public List<ProductDetails> SearchProducts(string searchPhrase)
         {
-            string sellerEmail = client.Email;
             List<ProductDetails> output = new List<ProductDetails>();
             foreach (ProductDetails product in products)
             {
@@ -104,5 +46,74 @@ namespace Auction.Model
             }
             return output;
         }
+        public ProductStorage()
+        {
+            this.products = new List<ProductDetails>();
+        }
+        public ProductStorage(List<ProductDetails> products)
+        {
+            this.products = products;
+        }
+        public void Add(ProductDetails product)
+        {
+            products.Add(product);
+        }
     }
 }
+// public class ProductStorage : Storage
+// {
+//     public Client client;
+//     List<ProductDetails> products = new List<ProductDetails>();
+//     private string fileName;
+//     public Client Client
+//     {
+//         get { return client; }
+//         set { client = value; }
+//     }
+//     public ProductStorage(string fileName)
+//     {
+//         this.fileName = fileName;
+//         Load();
+//     }
+//     public void NewProduct(ProductDetails product)
+//     {
+//         products.Add(product);
+//         XDocument doc = XDocument.Load(fileName);
+//         doc.Element("Products").Add(
+//             new XElement("Product", new XAttribute("ID", products.Count),
+//                 new XElement("Email", product.SellerEmail),
+//                 new XElement("Name", product.Name),
+//                 new XElement("Description", product.Description),
+//                 new XElement("Price", product.Price),
+//                 new XElement("Bids", "")
+//             )
+//         );
+//         doc.Save(fileName);
+//     }
+//     public List<ProductDetails> ShowProducts(string sellerEmail)
+//     {
+//         List<ProductDetails> output = new List<ProductDetails>();
+//         foreach (ProductDetails product in products)
+//         {
+//             if (product.SellerEmail == sellerEmail)
+//             {
+//                 output.Add(product);
+//             }
+//         }
+//         return output;
+//     }
+// public void BidonProduct(ProductDetails product)
+// {
+//     decimal price = (product.Price > product.Bids.GetMaxAmount()) ? product.Price : product.Bids.GetMaxAmount();
+//     WriteLine($"Bidding for {product.Name} (regular price ${product.Price}), current highest bid is ${product.Bids.GetMaxAmount()}");
+//     decimal bidAmount = CustomInput.CustomCurrency();
+//     while (bidAmount < price)
+//     {
+//         WriteLine($"Bid must be greater than {price}");
+//         bidAmount = CustomInput.CustomCurrency();
+//     }
+// }
+// public bool IsDelivery() 
+// {
+//     return false;
+// }

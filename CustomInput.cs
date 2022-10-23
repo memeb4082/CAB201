@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using static System.Console;
 using System.Globalization;
-namespace Auction.View
+namespace Auction
 {
     public class CustomInput
     {
@@ -31,7 +31,7 @@ namespace Auction.View
                 MatchCollection match = re.Matches(password);
                 if (match.Count == 0)
                 {
-                    WriteLine("BADDDDDDDD Password must be 8 characters long, contain at least 1 uppercase, lowercase, special character and number");
+                    WriteLine("Password must be 8 characters long, contain at least 1 uppercase, lowercase, special character and number");
                 }
                 else
                 {
@@ -115,7 +115,7 @@ namespace Auction.View
                 return input;
             }
         }
-        public static decimal CustomCurrency(string prompt)
+        public static decimal CustomCurrency(string? prompt = null)
         {
             string input;
             decimal output;
@@ -123,9 +123,8 @@ namespace Auction.View
             Regex re = new Regex("([$]){1}\\s*([\\d.,]{0,}\\.[\\d.,]{2}\\b)");
             while (true)
             {
-                WriteLine(prompt);
+                if (prompt != null) {WriteLine(prompt);}
                 input = Read();
-
                 Match match = re.Match(input);
                 if (match.Success)
                 {

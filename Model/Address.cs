@@ -1,5 +1,5 @@
 ﻿using static System.Console;
-using Auction.View;
+// using Auction.View;
 namespace Auction.Model
 {
     public class Address

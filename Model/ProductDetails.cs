@@ -1,5 +1,5 @@
 using static System.Console;
-using Auction.View;
+// using Auction.View;
 namespace Auction.Model
 {
     public class ProductDetails
@@ -7,7 +7,6 @@ namespace Auction.Model
         private string name;
         private string description;
         private decimal price;
-        private string sellerEmail;
         private BiddingStorage bids;
         public string Name
         {
@@ -57,11 +56,6 @@ namespace Auction.Model
                 }
             }
         }
-        public string SellerEmail
-        {
-            get { return sellerEmail; }
-            set { sellerEmail = value; }
-        }
         public BiddingStorage Bids
         {
             get { return bids; }
@@ -84,20 +78,18 @@ namespace Auction.Model
                 return false;
             }
         }
-        public ProductDetails(string email)
+        public ProductDetails()
         {
             this.name = CustomInput.CustomString("Product name");
             this.description = CustomInput.CustomString("Product description");
             this.price = CustomInput.CustomCurrency("Product price $d.cc");
-            this.sellerEmail = email;
             this.bids = new BiddingStorage();
         }
-        internal ProductDetails(string name, string description, decimal price, string sellerEmail)
+        internal ProductDetails(string name, string description, decimal price)
         {
             this.name = name;
             this.description = description;
             this.price = price;
-            this.sellerEmail = sellerEmail;
             this.bids = new BiddingStorage();
         }
     }
