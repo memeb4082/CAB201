@@ -4,14 +4,25 @@ using static System.Console;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-// using Auction.View;
+using static Auction.CustomUI;
 namespace Auction.Model
 {
     public class AuctionHouse
     {
         List<Client> clients = new List<Client>();
-
+        private Client authUser;
         private string fileName;
+        public Client AuthUser
+        {
+            get
+            {
+                return authUser;
+            }
+            set
+            {
+                authUser = value;
+            }
+        }
         public AuctionHouse(string fileName)
         {
             this.fileName = fileName;
@@ -96,7 +107,7 @@ namespace Auction.Model
                 );
                 doc.Save(fileName);
             }
-            CustomInput.CustomTitle($"Client {client.Name}({client.Email}) has successfully registered at the Auction house.");
+            CustomTitle($"Client {client.Name}({client.Email}) has successfully registered at the Auction house.");
 
         }
         public Client Login()
@@ -109,7 +120,7 @@ namespace Auction.Model
             Client loginTarget = default;
             while (emailVerified == false)
             {
-                email = CustomInput.CustomString("Please enter email:");
+                email = CustomString("Please enter email:");
                 foreach (Client client in clients)
                 {
                     if (string.Equals(email, client.Email))
@@ -123,7 +134,7 @@ namespace Auction.Model
             }
             while (passwordVerified == false)
             {
-                password = CustomInput.CustomString("Please enter password:");
+                password = CustomString("Please enter password:");
                 if (string.Equals(password, loginTarget.Password))
                 {
                     passwordVerified = true;
@@ -153,14 +164,10 @@ namespace Auction.Model
             }
             return loginTarget;
         }
-        public void GetDeliveryOpt(XElement data, decimal bidAmount)
-        {
-            // TODO: Finish up code
-        }
         public void BidOnProduct(string productName, Client client, decimal bidAmount)
         {
-            XElement bids = XDocument.Load(fileName)
-                .Descendants("Client")
+            XDocument doc = XDocument.Load(fileName);
+            XElement bids = doc.Descendants("Client")
                 .Where(arg => arg.Attribute("Email").Value == client.Email)
                 .Descendants("Product")
                 .Where(arrg => arrg.Element("Name").Value == productName)
@@ -172,7 +179,18 @@ namespace Auction.Model
             }
             else
             {
-                // TODO: Finish up code
+                // TODO: Change to call to delivery option view method
+                int option = CustomInt("(1) Deliver to home\n (2) Click and Collect", "");
+                while ((option < 2) && (option > 0))
+                {
+                    option = CustomInt("(1) Deliver to home\n (2) Click and Collect", "");
+                }
+                if (option == 1)
+                {
+                    new ClickandCollect(client.Email, bidAmount);
+                } else {
+                    new DeliverProduct(client.Email, bidAmount);
+                }
             }
         }
     }

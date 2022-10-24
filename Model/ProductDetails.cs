@@ -1,5 +1,5 @@
 using static System.Console;
-// using Auction.View;
+using static Auction.CustomUI;
 namespace Auction.Model
 {
     public class ProductDetails
@@ -80,9 +80,9 @@ namespace Auction.Model
         }
         public ProductDetails()
         {
-            this.name = CustomInput.CustomString("Product name");
-            this.description = CustomInput.CustomString("Product description");
-            this.price = CustomInput.CustomCurrency("Product price $d.cc");
+            this.name = CustomString("Product name");
+            this.description = CustomString("Product description");
+            this.price = CustomCurrency("Product price $d.cc");
             this.bids = new BiddingStorage();
         }
         internal ProductDetails(string name, string description, decimal price)

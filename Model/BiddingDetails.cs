@@ -1,10 +1,9 @@
-// using Auction.View;
+using static Auction.CustomUI;
 namespace Auction.Model
 {
     public abstract class BiddingDetails
     {
         protected string bidderEmail;
-        // protected string bidderName;
         protected decimal bidAmount;
 
         public string BidderEmail
@@ -31,7 +30,6 @@ namespace Auction.Model
         }
         public override string ToString()
         {
-            // return $"{(bidderName == null ? "-" : bidderName)}\t {(bidderEmail == null ? "-" : bidderEmail)}\t {(bidAmount == 0.0M ? "-" : bidAmount)}";
             return $"{(bidAmount == 0.0M ? "-" : bidAmount)}";
         }
         public BiddingDetails(string bidderEmail, decimal bidAmount)

@@ -106,11 +106,11 @@ namespace Auction.Model
 // {
 //     decimal price = (product.Price > product.Bids.GetMaxAmount()) ? product.Price : product.Bids.GetMaxAmount();
 //     WriteLine($"Bidding for {product.Name} (regular price ${product.Price}), current highest bid is ${product.Bids.GetMaxAmount()}");
-//     decimal bidAmount = CustomInput.CustomCurrency();
+//     decimal bidAmount = CustomCurrency();
 //     while (bidAmount < price)
 //     {
 //         WriteLine($"Bid must be greater than {price}");
-//         bidAmount = CustomInput.CustomCurrency();
+//         bidAmount = CustomCurrency();
 //     }
 // }
 // public bool IsDelivery() 

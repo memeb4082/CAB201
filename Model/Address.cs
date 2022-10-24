@@ -1,4 +1,5 @@
-﻿using static System.Console;
+﻿using static Auction.CustomUI;
+using static System.Console;
 // using Auction.View;
 namespace Auction.Model
 {
@@ -149,25 +150,25 @@ namespace Auction.Model
         }
         public Address()
         {
-            this.unitNum = CustomInput.CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
+            this.unitNum = CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
             while (UnitNum == -1)
             {
-                this.UnitNum = CustomInput.CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
+                this.UnitNum = CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");
             }
-            this.streetNum = CustomInput.CustomInt("Street number:", "\tStreet number must be a positive integer");
+            this.streetNum = CustomInt("Street number:", "\tStreet number must be a positive integer");
             while (StreetNum == -1)
             {
-                this.StreetNum = CustomInput.CustomInt("Street number:", "\tStreet number must be a positive integer");
+                this.StreetNum = CustomInt("Street number:", "\tStreet number must be a positive integer");
             }
 
-            streetName = CustomInput.CustomString("Street name", "^(?!\\s*$).+");
-            streetSuffix = CustomInput.CustomString($"Street suffix:)", "");
-            city = CustomInput.CustomString("City:", "^(?!\\s*$).+");
-            state = CustomInput.CustomOption($"State (ACT, NSW, NT, QLD, SA, TAS, VIC, WA):", statesList);
-            this.PostCode = CustomInput.CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
+            streetName = CustomString("Street name", "^(?!\\s*$).+");
+            streetSuffix = CustomString($"Street suffix:)", "");
+            city = CustomString("City:", "^(?!\\s*$).+");
+            state = CustomOption($"State (ACT, NSW, NT, QLD, SA, TAS, VIC, WA):", statesList);
+            this.PostCode = CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
             while (PostCode == -1)
             {
-                this.PostCode = CustomInput.CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
+                this.PostCode = CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
             }
         }
 

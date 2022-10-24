@@ -5,11 +5,11 @@ namespace Auction.Model
     public class DeliverProduct : BiddingDetails
     {
         protected Address deliveryAddress;
-        public DeliverProduct(string bidderEmail, int productIndex) : base(bidderEmail, productIndex)
+        public DeliverProduct(string bidderEmail, decimal bidAmount) : base(bidderEmail, bidAmount)
         {
             this.deliveryAddress = new Address();
         }
-        public DeliverProduct(Address deliveryAddress, string bidderEmail, int productIndex) : base(bidderEmail, productIndex)
+        public DeliverProduct(Address deliveryAddress, string bidderEmail, decimal bidAmount) : base(bidderEmail, bidAmount)
         {
             this.deliveryAddress = deliveryAddress;
         }

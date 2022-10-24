@@ -4,7 +4,7 @@ using static System.Console;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-// using Auction.View;
+using static Auction.CustomUI;
 namespace Auction.Model
 {
     public class Client
@@ -62,15 +62,17 @@ namespace Auction.Model
         }
         public Client()
         {
-            this.name = CustomInput.CustomString("Please enter username (must not be empty)", @"^(?!\s*$).+");
-            this.email = CustomInput.CustomString("Please enter email", @"^[A-Za-z0-9]+([\.]?[A-Za-z0-9]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
-            this.password = CustomInput.CustomPassword();
+            this.name = CustomString("Please enter username (must not be empty)", @"^(?!\s*$).+");
+            this.email = CustomString("Please enter email", @"^[A-Za-z0-9]+([\.]?[A-Za-z0-9]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
+            this.password = CustomPassword();
+            this.products = new ProductStorage();
         }
         internal Client(string name, string email, string password)
         {
             this.name = name;
             this.email = email;
             this.password = password;
+            this.products = new ProductStorage();
         }
     }
 }

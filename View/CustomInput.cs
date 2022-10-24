@@ -3,7 +3,7 @@ using static System.Console;
 using System.Globalization;
 namespace Auction
 {
-    public class CustomInput
+    public class CustomUI
     {
         public static void CustomTitle(string title) {
             WriteLine($"{title}\n{new string('-', title.Length)}");

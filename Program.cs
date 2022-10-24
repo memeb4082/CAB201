@@ -17,6 +17,7 @@ namespace Auction
             // );
             // Menu.Display();
             AuctionHouse auction = new AuctionHouse("data.xml");
+            // auction.Register();
             Client client = auction.Login();
             auction.BidOnProduct("14", client, 0.0M);
             ProductDetails product = new ProductDetails();
