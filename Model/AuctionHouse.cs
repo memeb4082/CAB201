@@ -159,12 +159,11 @@ namespace Auction.Model
         }
         public void BidOnProduct(string productName, Client client, decimal bidAmount)
         {
-            XDocument doc = XDocument.Load(fileName);
-            XElement bids = doc
+            XElement bids = XDocument.Load(fileName)
                 .Descendants("Client")
                 .Where(arg => arg.Attribute("Email").Value == client.Email)
                 .Descendants("Product")
-                .Where(arrg => arrg.Element("Name").Value == "dfggsdfg")
+                .Where(arrg => arrg.Element("Name").Value == productName)
                 .Descendants("Bids")
                 .FirstOrDefault();
             if (bids == null)

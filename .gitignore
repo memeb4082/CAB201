@@ -1,7 +1,5 @@
 .vs/
 .vscode/
-Auction.csproj
-Auction.sln
 View/testdata.txt
 bin
 obj

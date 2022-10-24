@@ -11,14 +11,16 @@ namespace Auction.Model
         {
             // TODO: Double check video for prompts
             startDateTime = CustomInput.CustomDateTime("Please enter start time");
-            endDateTime = CustomInput.CustomDateTime("Please enter end time");
-            while (startDateTime.Subtract(DateTime.Now).Hours < 1 || endDateTime.Subtract(startDateTime).Hours < 1)
+            while (startDateTime.Subtract(DateTime.Now).Hours < 1)
             {
                 startDateTime = CustomInput.CustomDateTime("Please enter start time");
-                endDateTime = CustomInput.CustomDateTime("Please enter end time");
             }
-            this.startDateTime = startDateTime;
-            this.endDateTime = endDateTime;
+            endDateTime = CustomInput.CustomDateTime("Please enter end time");
+            while (endDateTime.Subtract(startDateTime).Hours < 1)
+            {
+                endDateTime = CustomInput.CustomDateTime("Please enter end time");
+
+            }
         }
     }
 }

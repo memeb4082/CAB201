@@ -20,7 +20,7 @@ namespace Auction.Model
                 else
                 {
                     WriteLine("Product name cannot be empty");
-                    name = null;
+                    name = default;
                 }
             }
         }

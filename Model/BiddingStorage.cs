@@ -24,7 +24,7 @@ namespace Auction.Model
                 string amount = bidItems[bidItems.Count - 1].ToString();
                 return amount;
             }
-            catch (ArgumentOutOfRangeException e) {
+            catch (ArgumentOutOfRangeException) {
                 return $"\t-\t -\t -";
             }
         }
@@ -34,7 +34,7 @@ namespace Auction.Model
                 decimal amount = bidItems[bidItems.Count - 1].BidAmount;
                 return amount;
             }
-            catch (ArgumentOutOfRangeException e) {
+            catch (ArgumentOutOfRangeException) {
                 return 0.0M;
             }
         }
