@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using static System.Console;
+using static Auction.CustomUI;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using static Auction.CustomUI;
+// using Auction.View;
 namespace Auction.Model
 {
     public class Client
@@ -48,7 +49,7 @@ namespace Auction.Model
         public void NewProduct(ProductDetails product)
         {
             products.Add(product);
-            XDocument doc =  XDocument.Load("data.xml");
+            XDocument doc = XDocument.Load("data.xml");
             XElement account = doc.Descendants("Client")
                 .Where(arg => arg.Attribute("Email").Value == email)
                 .FirstOrDefault();
@@ -65,14 +66,12 @@ namespace Auction.Model
             this.name = CustomString("Please enter username (must not be empty)", @"^(?!\s*$).+");
             this.email = CustomString("Please enter email", @"^[A-Za-z0-9]+([\.]?[A-Za-z0-9]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
             this.password = CustomPassword();
-            this.products = new ProductStorage();
         }
         internal Client(string name, string email, string password)
         {
             this.name = name;
             this.email = email;
             this.password = password;
-            this.products = new ProductStorage();
         }
     }
 }

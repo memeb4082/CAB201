@@ -162,6 +162,7 @@ namespace Auction.Model
                    ));
                 doc.Save(fileName);
             }
+            this.authUser = loginTarget;
             return loginTarget;
         }
         public void BidOnProduct(string productName, Client client, decimal bidAmount)
@@ -188,10 +189,38 @@ namespace Auction.Model
                 if (option == 1)
                 {
                     new ClickandCollect(client.Email, bidAmount);
-                } else {
+                }
+                else
+                {
                     new DeliverProduct(client.Email, bidAmount);
                 }
             }
+        }
+        public void ViewMyProducts(out string output)
+        {
+            output = null;
+            foreach (Client client in clients)
+            {
+                if (client == authUser)
+                {
+                    output = client.Products.ToString();
+                    break;
+                }
+            }
+        }
+        public List<ProductDetails> ViewBuyableProducts(out string output)
+        {
+            output = null;
+            List<ProductDetails> list = new List<ProductDetails>();
+            foreach (Client client in clients)
+            {
+                if (client == authUser) {}
+                foreach (ProductDetails product in client.Products.Products) {
+                    list.Add(product);
+                }
+            }
+            output = new ProductStorage(list).ToString();
+            return list;
         }
     }
 }
