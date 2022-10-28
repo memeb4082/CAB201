@@ -1,16 +1,19 @@
 using System;
+using static Auction.CustomUI;
+using static System.Console;
 using Auction.Model;
 
 namespace Auction.View
 {
-	public class HomeDeliveryDialog : Dialog
-	{
-		const string TITLE = "Home Delivery";
-		public HomeDeliveryDialog(AuctionHouse auction) : base(TITLE, auction)
-		{
-		}
-		public override void Display()
-		{
-		}
-	}
+    public class HomeDeliveryDialog : Dialog
+    {
+        const string TITLE = "Home Delivery";
+        public HomeDeliveryDialog(ProductDetails Product, decimal BidAmt) : base(TITLE, Product, BidAmt)
+        {
+        }
+        public override void Display()
+        {
+            DeliverProduct newBid = new DeliverProduct(BidAmount);
+        }
+    }
 }

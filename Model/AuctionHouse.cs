@@ -188,11 +188,11 @@ namespace Auction.Model
                 }
                 if (option == 1)
                 {
-                    new ClickandCollect(client.Email, bidAmount);
+                    new ClickandCollect(bidAmount);
                 }
                 else
                 {
-                    new DeliverProduct(client.Email, bidAmount);
+                    new DeliverProduct(bidAmount);
                 }
             }
         }

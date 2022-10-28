@@ -3,20 +3,7 @@ namespace Auction.Model
 {
     public abstract class BiddingDetails
     {
-        protected string bidderEmail;
         protected decimal bidAmount;
-
-        public string BidderEmail
-        {
-            get
-            {
-                return bidderEmail;
-            }
-            set
-            {
-                bidderEmail = value;
-            }
-        }
         public decimal BidAmount
         {
             get
@@ -32,9 +19,8 @@ namespace Auction.Model
         {
             return $"{(bidAmount == 0.0M ? "-" : bidAmount)}";
         }
-        public BiddingDetails(string bidderEmail, decimal bidAmount)
+        public BiddingDetails(decimal bidAmount)
         {
-            this.bidderEmail = bidderEmail;
             this.bidAmount = bidAmount;
         }
     }

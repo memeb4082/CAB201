@@ -13,8 +13,22 @@ namespace Auction.View
             AuctionHouse Auction,
             params IDisplayable[] options
         ) : base(
-            Title, 
+            Title,
             Auction
+        )
+        {
+            this.options = options;
+            this.Heading = $"Please enter an option between 1 and {options.Length}";
+        }
+        public Menu(
+            string Title,
+            ProductDetails Product,
+            decimal BidAmt,
+            params IDisplayable[] options
+        ) : base(
+            Title,
+            Product,
+            BidAmt
         )
         {
             this.options = options;

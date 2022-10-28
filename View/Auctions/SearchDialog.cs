@@ -41,8 +41,8 @@ namespace Auction.View
                     WriteLine($"Amount must be greater than ${buyable[productIndex - 1].Price}");
                     bidamt = CustomCurrency("How much do you bid?");
                 }
-                Menu deliveryInstructions = new DeliveryMenu(Auction);
-                deliveryInstructions.Display();
+                Menu deliveryInstructions = new DeliveryMenu(buyable[productIndex - 1], bidamt);
+                deliveryInstructions.Display(); 
             }
         }
     }

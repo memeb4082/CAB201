@@ -7,7 +7,7 @@ namespace Auction.Model
         protected DateTime startDateTime;
         protected DateTime endDateTime;
 
-        public ClickandCollect(string bidderEmail, decimal bidAmount) : base(bidderEmail, bidAmount)
+        public ClickandCollect(decimal bidAmount) : base(bidAmount)
         {
             // TODO: Double check video for prompts
             startDateTime = CustomDateTime("Please enter start time");
@@ -19,7 +19,6 @@ namespace Auction.Model
             while (endDateTime.Subtract(startDateTime).Hours < 1)
             {
                 endDateTime = CustomDateTime("Please enter end time");
-
             }
         }
     }

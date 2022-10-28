@@ -137,11 +137,11 @@ namespace Auction
         public static DateTime CustomDateTime(string prompt)
         {
 
-            string[] dateFormat = {"M/d/yyyy h:mm:ss tt", "M/d/yyyy h:mm tt",
-            "MM/dd/yyyy hh:mm:ss", "M/d/yyyy h:mm:ss",
-            "M/d/yyyy hh:mm tt", "M/d/yyyy hh tt",
-            "M/d/yyyy h:mm", "M/d/yyyy h:mm",
-            "MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm"};
+            string[] dateFormat = {"d/M/yyyy h:mm:ss tt", "d/M/yyyy h:mm tt",
+            "dd/MM/yyyy hh:mm:ss", "d/M/yyyy h:mm:ss",
+            "d/M/yyyy hh:mm tt", "d/M/yyyy hh tt",
+            "d/M/yyyy h:mm", "d/M/yyyy h:mm",
+            "dd/MM/yyyy hh:mm", "d/MM/yyyy hh:mm"};
             while (true)
             {
                 DateTime output;

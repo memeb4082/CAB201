@@ -5,13 +5,16 @@ namespace Auction.View
     {
         private const string TITLE = "Delivery Instructions";
         public DeliveryMenu(
-            AuctionHouse Auction
+            ProductDetails product,
+            decimal bidamt
         ) : base(
-        TITLE,
-        Auction,
-        new ClickAndCollectDialog(Auction),
-        new HomeDeliveryDialog(Auction)
-        )
-        { }
+			TITLE,
+			product,
+            bidamt,
+			new ClickAndCollectDialog(product, bidamt),
+			new HomeDeliveryDialog(product, bidamt)
+		) {
+
+		}
     }
 }

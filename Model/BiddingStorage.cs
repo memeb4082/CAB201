@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-// using Auction.View;
 namespace Auction.Model
 {
     public class BiddingStorage
