@@ -1,6 +1,5 @@
 ﻿using static Auction.CustomUI;
-using static System.Console;
-// using Auction.View;
+using System.Xml.Linq;
 namespace Auction.Model
 {
     public class Address
@@ -16,7 +15,8 @@ namespace Auction.Model
         private string city;
         private int postCode;
         private string state;
-
+        // <summary>unit number is nullable int to allow for addressses without unit num</summary>
+        // <summary>sets value to negative if failed as null is legal input </summary>
         public int? UnitNum
         {
             get { return unitNum; }
@@ -37,6 +37,7 @@ namespace Auction.Model
                 }
             }
         }
+        // <summary>private set method only accepts non zero positive integer for street number</summary>
         public int StreetNum
         {
             get { return streetNum; }
@@ -57,6 +58,7 @@ namespace Auction.Model
                 }
             }
         }
+        // <summary></summary>
         public string StreetName
         {
             get { return streetName; }
@@ -138,6 +140,30 @@ namespace Auction.Model
         {
             return $"{(unitNum == null ? $"{streetNum}" : $"{unitNum}/{streetNum}")} {streetName} {streetSuffix}, {city} {postCode} {state}";
         }
+        public XElement ToXElement()
+        {
+            
+            XElement output = new XElement("Address",
+                new XElement("UnitNo", unitNum),
+                new XElement("StreetName", streetName),
+                new XElement("StreetNo", streetNum),
+                new XElement("StreetSuffix", streetSuffix),
+                new XElement("City", city),
+                new XElement("PostCode", postCode),
+                new XElement("State", state)
+            );
+            return output;
+        }
+        internal Address(XElement? addressData)
+        {
+            this.unitNum = int.Parse(addressData.Element("UnitNo").Value);
+            this.streetNum = int.Parse(addressData.Element("StreetNo").Value);
+            this.streetName = addressData.Element("StreetName").Value;
+            this.streetSuffix = addressData.Element("StreetSuffix").Value;
+            this.city = addressData.Element("City").Value;
+            this.postCode = int.Parse(addressData.Element("PostCode").Value);
+            this.state = addressData.Element("State").Value;
+        }
         internal Address(int unitNum, int streetNum, string streetName, string streetSuffix, string city, int postCode, string state)
         {
             this.unitNum = unitNum;
@@ -171,16 +197,5 @@ namespace Auction.Model
                 this.PostCode = CustomInt("Postcode (1000 .. 9999)", "Postcode must be between 1000 and 9999");
             }
         }
-
-        // public address()
-        // {
-        //     this.unitNum = 5;
-        //     this.streetNum = 5;
-        //     this.streetName = "Texas";
-        //     this.streetSuffix = "Terrace";
-        //     this.city = "Sophia Antipolis";
-        //     this.state = "Nt";
-        //     this.postCode = 1177;
-        // }
     }
 }

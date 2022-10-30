@@ -1,13 +1,22 @@
-using static System.Console;
 using static Auction.CustomUI;
+using System.Xml.Linq;
 namespace Auction.Model
 {
     public class ProductDetails
     {
+        private int productIndex;
         private string name;
         private string description;
         private decimal price;
         private BiddingStorage bids;
+        public int ProductIndex
+        {
+            get { return productIndex; }
+            internal set
+            {
+                productIndex = value;
+            }
+        }
         public string Name
         {
             get { return name; }
@@ -59,22 +68,26 @@ namespace Auction.Model
         public BiddingStorage Bids
         {
             get { return bids; }
-            private set
+            internal set
             {
                 bids = value;
             }
         }
         public override string ToString()
         {
-            return $"{(name)}\t {description}\t ${price}\t {bids.GetMax()}";
+            return $"{(name)}\t {description}\t ${price}\t {((Bids.BidItems.Count > 1) ? bids.BidItems[bids.BidItems.Count - 1].ToString() : "-\t -\t -")}";
         }
-        internal bool Search(string phrase) {
+        internal bool Search(string phrase)
+        {
             phrase = phrase.ToLower();
             string searchDescription = description.ToLower();
             string searchName = name.ToLower();
-            if (searchDescription.Contains(phrase) || searchName.Contains(phrase)) {
+            if (searchDescription.Contains(phrase) || searchName.Contains(phrase))
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
@@ -85,11 +98,12 @@ namespace Auction.Model
             this.price = CustomCurrency("Product price $d.cc");
             this.bids = new BiddingStorage();
         }
-        internal ProductDetails(string name, string description, decimal price)
+        internal ProductDetails(XElement productData)
         {
-            this.name = name;
-            this.description = description;
-            this.price = price;
+            this.name = productData.Element("Name").Value;
+            this.description = productData.Element("Description").Value;
+            this.price = Convert.ToDecimal(productData.Element("Price").Value);
+            this.productIndex = int.Parse(productData.Attribute("ID").Value);
             this.bids = new BiddingStorage();
         }
     }

@@ -1,5 +1,5 @@
 using System;
-using static System.Console;
+
 using static Auction.CustomUI;
 using Auction.Model;
 
@@ -14,6 +14,7 @@ namespace Auction.View
         public override void Display()
         {
             ClickandCollect newBid = new ClickandCollect(BidAmount);
+            Product.Bids.Add(newBid);
         }
     }
 }

@@ -1,5 +1,4 @@
 using Auction.Model;
-using static System.Console;
 using static Auction.CustomUI;
 
 namespace Auction.View
@@ -17,13 +16,14 @@ namespace Auction.View
         public override void Display()
         {
             string tableBuyable;
+            string searchPhrase = CustomString("Please supply a search phrase (ALL to see all products)");
             CustomTitle($"Product Search for {Auction.AuthUser.Name}({Auction.AuthUser.Email})");
-            List<ProductDetails> buyable = Auction.ViewBuyableProducts(out tableBuyable);
+            List<ProductDetails> buyable = Auction.ViewBuyableProducts(out tableBuyable, searchPhrase);
             WriteLine(tableBuyable);
             string bidYes;
             while (true)
             {
-                bidYes = CustomString("Would you like to place a bid on any of these items").ToLower();
+                bidYes = CustomString("Would you like to place a bid on any of these items").ToLower().Trim();
                 if (bidYes == "yes" || bidYes == "no") { break; }
             }
             if (bidYes == "yes")
@@ -33,17 +33,19 @@ namespace Auction.View
                 {
                     productIndex = CustomInt($"Please enter a non-negative integer between 1 and {buyable.Count}", "Input must be a valid integer");
                 }
-                WriteLine($"Bidding for {buyable[productIndex - 1].Name} (regular price ${buyable[productIndex - 1].Price}), current highest bid ${buyable[productIndex - 1].Bids.GetMaxAmount().ToString()}");
-                WriteLine("How much do you bid?");
+                ProductDetails selected = buyable[productIndex - 1];
+                WriteLine($"Bidding for {selected.Name} (regular price ${selected.Price}), current highest bid ${selected.Bids.GetMaxAmount().ToString()}");
                 decimal bidamt = CustomCurrency("How much do you bid?");
-                while (bidamt < buyable[productIndex - 1].Price)
+                while (bidamt < selected.Bids.GetMaxAmount())
                 {
-                    WriteLine($"Amount must be greater than ${buyable[productIndex - 1].Price}");
+                    WriteLine($"Amount must be greater than ${selected.Bids.GetMaxAmount()}");
                     bidamt = CustomCurrency("How much do you bid?");
                 }
-                Menu deliveryInstructions = new DeliveryMenu(buyable[productIndex - 1], bidamt);
-                deliveryInstructions.Display(); 
-            }
+                Menu deliveryInstructions = new DeliveryMenu(selected, bidamt);
+                deliveryInstructions.Display();
+                selected.Bids.BidItems.Last().BidderData = Auction.AuthUser;
+                Auction.UpdateBids(selected);
+             }
         }
     }
 }

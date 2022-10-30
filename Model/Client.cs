@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using static System.Console;
+
 using static Auction.CustomUI;
 using System.IO;
 using System.Linq;
@@ -16,6 +16,7 @@ namespace Auction.Model
         private string password;
         private ProductStorage products;
         private Address homeAddress;
+        private List<ProductDetails> productsOwned;
         // Params
         public string Name
         {
@@ -36,7 +37,6 @@ namespace Auction.Model
         {
             get { return email.ToString(); }
         }
-        // TODO: Add password hasher, implement as method to use with validation, internal class maybe?
         public string Password
         {
             get { return password; }
@@ -46,14 +46,37 @@ namespace Auction.Model
             get { return products; }
             set { products = value; }
         }
+        public List<ProductDetails> ProductsOwned{
+            get { return productsOwned; }
+            set { productsOwned = value; }
+        }
+        internal XElement ToXElementBidding()
+        {
+            return new XElement(new XElement("Client", new XAttribute("Email", email),
+                       new XElement("Name", name)));
+        }
+        internal XElement ToXElement()
+        {
+            return new XElement(new XElement("Client", new XAttribute("Email", email),
+                        new XElement("Name", name),
+                        new XElement("Password", password),
+                        new XElement("Products", ""),
+                        new XElement("Purchased", "")));
+        }
         public void NewProduct(ProductDetails product)
         {
-            products.Add(product);
             XDocument doc = XDocument.Load("data.xml");
             XElement account = doc.Descendants("Client")
                 .Where(arg => arg.Attribute("Email").Value == email)
                 .FirstOrDefault();
+            int currID = doc.Descendants("Client")
+                .Descendants("Products")
+                .Descendants("Product")
+                .Count();
+            product.ProductIndex = currID + 1;
+            products.Add(product);
             account.Element("Products").Add(new XElement("Product",
+                new XAttribute("ID", currID + 1),
                 new XElement("Name", product.Name),
                 new XElement("Description", product.Description),
                 new XElement("Price", product.Price),
@@ -64,14 +87,18 @@ namespace Auction.Model
         public Client()
         {
             this.name = CustomString("Please enter username (must not be empty)", @"^(?!\s*$).+");
-            this.email = CustomString("Please enter email", @"^[A-Za-z0-9]+([\.]?[A-Za-z0-9]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
+            this.email = CustomString("Please enter email", @"^[A-Za-z0-9-_]+([\.]?[A-Za-z0-9-_]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
             this.password = CustomPassword();
         }
-        internal Client(string name, string email, string password)
-        {
+        internal Client(string name, string email) {
             this.name = name;
             this.email = email;
-            this.password = password;
+        }
+        internal Client(XElement data)
+        {
+            this.name = data.Element("Name").Value;
+            this.email = data.Attribute("Email").Value;
+            this.password = data.Element("Password").Value;
         }
     }
 }

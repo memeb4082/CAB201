@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using static System.Console;
+
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -30,6 +30,19 @@ namespace Auction.Model
             }
             return output;
         }
+        public List<ProductDetails> Sellable(out string table)
+        {
+            List<ProductDetails> sellable = new List<ProductDetails>();
+            foreach (ProductDetails product in products)
+            {
+                if (product.Bids.BidItems.Count > 0) {
+                    sellable.Add(product);
+                }
+            }
+            sellable = sellable.OrderBy(p => p.Name).ToList();
+            table = new ProductStorage(sellable).ToString();
+            return sellable;
+        }
         public List<ProductDetails> SearchProducts(string searchPhrase)
         {
             List<ProductDetails> output = new List<ProductDetails>();
@@ -57,6 +70,10 @@ namespace Auction.Model
         public void Add(ProductDetails product)
         {
             products.Add(product);
+        }
+        public int ItemCount()
+        {
+            return products.Count;
         }
     }
 }

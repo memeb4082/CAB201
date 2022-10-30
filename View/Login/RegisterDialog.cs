@@ -1,4 +1,4 @@
-using static System.Console;
+
 using static Auction.CustomUI;
 using Auction.Model;
 

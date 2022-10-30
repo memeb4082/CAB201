@@ -1,4 +1,3 @@
-using static System.Console;
 using static Auction.CustomUI;
 using Auction.Model;
 
@@ -34,8 +33,9 @@ namespace Auction.View
             this.options = options;
             this.Heading = $"Please enter an option between 1 and {options.Length}";
         }
-        private void WriteOptions()
+        internal void WriteOptions()
         {
+            WriteLine();
             CustomTitle(Title);
             for (int i = 0; i < options.Length; i++)
             {
@@ -43,7 +43,7 @@ namespace Auction.View
             }
             WriteLine();
         }
-        private int GetOption()
+        internal IDisplayable GetOption()
         {
             int index;
             index = CustomInt($"Please select an option between {1} and {options.Length}", $"Option must be between 1 and {options.Length}");
@@ -51,14 +51,19 @@ namespace Auction.View
             {
                 index = CustomInt($"Please select an option between {1} and {options.Length}", $"Option must be between 1 and {options.Length}");
             }
-            return index - 1;
+            return options[index - 1];
         }
         public override void Display()
         {
             while (true)
             {
                 WriteOptions();
-                options[GetOption()].Display();
+                IDisplayable opt = GetOption();
+                opt.Display();
+                if (opt is ITerminator)
+                {
+                    break;
+                }
             }
         }
     }

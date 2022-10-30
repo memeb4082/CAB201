@@ -1,14 +1,20 @@
 using Auction.Model;
 using static Auction.CustomUI;
-namespace Auction.View {
-    public class ViewPurchasedDialog : Dialog {
+namespace Auction.View
+{
+    public class ViewPurchasedDialog : Dialog
+    {
         const string TITLE = "View My Purchased Items";
         public ViewPurchasedDialog(
             AuctionHouse auction
         ) : base(
             TITLE,
             auction
-        ) {}
-        public override void Display() {}
+        )
+        { }
+        public override void Display()
+        {
+            ProductStorage stuff = Auction.ViewMyProducts();
+        }
     }
 }

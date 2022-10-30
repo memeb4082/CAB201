@@ -8,13 +8,19 @@ namespace Auction.View
             ProductDetails product,
             decimal bidamt
         ) : base(
-			TITLE,
-			product,
+            TITLE,
+            product,
             bidamt,
-			new ClickAndCollectDialog(product, bidamt),
-			new HomeDeliveryDialog(product, bidamt)
-		) {
-
-		}
+            new ClickAndCollectDialog(product, bidamt),
+            new HomeDeliveryDialog(product, bidamt)
+        )
+        {
+        }
+        public override void Display()
+        {
+            WriteOptions();
+            IDisplayable opt = GetOption();
+            opt.Display();
+        }
     }
 }

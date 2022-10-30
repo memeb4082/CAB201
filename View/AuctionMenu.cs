@@ -12,7 +12,7 @@ namespace Auction.View {
             new SearchDialog(Auction),
             new ViewBidsDialog(Auction),
             new ViewPurchasedDialog(Auction),
-            new MainMenu(Auction)
+            new ExitDialog("Log off")
         ) {
 
         }

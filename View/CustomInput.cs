@@ -1,16 +1,24 @@
 using System.Text.RegularExpressions;
-using static System.Console;
 using System.Globalization;
 namespace Auction
 {
     public class CustomUI
     {
-        public static void CustomTitle(string title) {
-            WriteLine($"{title}\n{new string('-', title.Length)}");
+        public static void WriteLine(string text = ""){
+            Console.WriteLine(text);
         }
-        public static string Read() {
-            Write("> ");
-            return ReadLine();
+        public static void CustomMainTitle(string title)
+        {
+            Console.WriteLine($"+{new string('-', title.Length+2)}+\n| {title} |\n+{new string('-', title.Length+2)}+");
+        }
+        public static void CustomTitle(string title)
+        {
+            Console.WriteLine($"{title}\n{new string('-', title.Length)}");
+        }
+        public static string Read()
+        {
+            Console.Write("> ");
+            return Console.ReadLine();
         }
         public static string CustomPassword()
         {
@@ -123,7 +131,7 @@ namespace Auction
             Regex re = new Regex("([$]){1}\\s*([\\d.,]{0,}\\.[\\d.,]{2}\\b)");
             while (true)
             {
-                if (prompt != null) {WriteLine(prompt);}
+                if (prompt != null) { WriteLine(prompt); }
                 input = Read();
                 Match match = re.Match(input);
                 if (match.Success)
@@ -137,22 +145,13 @@ namespace Auction
         public static DateTime CustomDateTime(string prompt)
         {
 
-            string[] dateFormat = {"d/M/yyyy h:mm:ss tt", "d/M/yyyy h:mm tt",
-            "dd/MM/yyyy hh:mm:ss", "d/M/yyyy h:mm:ss",
-            "d/M/yyyy hh:mm tt", "d/M/yyyy hh tt",
-            "d/M/yyyy h:mm", "d/M/yyyy h:mm",
-            "dd/MM/yyyy hh:mm", "d/MM/yyyy hh:mm"};
             while (true)
             {
                 DateTime output;
                 string input;
                 WriteLine(prompt);
                 input = Read();
-                if (DateTime.TryParseExact(input,
-                        dateFormat,
-                        CultureInfo.CurrentCulture,
-                        DateTimeStyles.None,
-                        out output))
+                if (DateTime.TryParse(input, out output))
                 {
                     return output;
                 }

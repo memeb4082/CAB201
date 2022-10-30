@@ -1,6 +1,6 @@
 using System;
 using static Auction.CustomUI;
-using static System.Console;
+
 using Auction.Model;
 
 namespace Auction.View
@@ -14,6 +14,7 @@ namespace Auction.View
         public override void Display()
         {
             DeliverProduct newBid = new DeliverProduct(BidAmount);
+            Product.Bids.Add(newBid);
         }
     }
 }

@@ -3,5 +3,5 @@ using static Auction.CustomUI;
 
 namespace Auction.View
 {
-    public interface ITermiantor { }
+    public interface ITerminator { }
 }
