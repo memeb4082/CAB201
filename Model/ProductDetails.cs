@@ -8,7 +8,7 @@ namespace Auction.Model
         private string name;
         private string description;
         private decimal price;
-        private BiddingStorage bids;
+        private BiddingDetails bid;
         public int ProductIndex
         {
             get { return productIndex; }
@@ -65,17 +65,17 @@ namespace Auction.Model
                 }
             }
         }
-        public BiddingStorage Bids
+        public BiddingDetails Bid
         {
-            get { return bids; }
+            get { return bid; }
             internal set
             {
-                bids = value;
+                bid = value;
             }
         }
         public override string ToString()
         {
-            return $"{(name)}\t {description}\t ${price}\t {((Bids.BidItems.Count > 1) ? bids.BidItems[bids.BidItems.Count - 1].ToString() : "-\t -\t -")}";
+            return $"{(name)}\t {description}\t ${price}\t";
         }
         internal bool Search(string phrase)
         {
@@ -96,7 +96,6 @@ namespace Auction.Model
             this.name = CustomString("Product name");
             this.description = CustomString("Product description");
             this.price = CustomCurrency("Product price $d.cc");
-            this.bids = new BiddingStorage();
         }
         internal ProductDetails(XElement productData)
         {
@@ -104,7 +103,6 @@ namespace Auction.Model
             this.description = productData.Element("Description").Value;
             this.price = Convert.ToDecimal(productData.Element("Price").Value);
             this.productIndex = int.Parse(productData.Attribute("ID").Value);
-            this.bids = new BiddingStorage();
         }
     }
 

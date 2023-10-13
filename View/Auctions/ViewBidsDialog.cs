@@ -15,8 +15,14 @@ namespace Auction.View
         public override void Display()
         {
             string sellingTable;
+            if (Auction.AuthUser.Sellable(out sellingTable).Count() == 0)
+            {
+                CustomTitle($"List Product Bids for {Auction.AuthUser.Name}({Auction.AuthUser.Email})");
+                WriteLine("No bids were found.");
+                new AuctionMenu(Auction).Display();
+            }
             CustomTitle($"List Product Bids for {Auction.AuthUser.Name}({Auction.AuthUser.Email})");
-            List<ProductDetails> selling = Auction.AuthUser.Products.Sellable(out sellingTable);
+            List<ProductDetails> selling = Auction.AuthUser.Sellable(out sellingTable);
             WriteLine(sellingTable);
             string sellYes;
             while (true)
@@ -31,9 +37,12 @@ namespace Auction.View
                 {
                     productIndex = CustomInt($"Please enter an integer between 1 and {selling.Count}", "Input must be a valid integer");
                 }
-                ProductDetails productSold = selling[productIndex-1];
-                BiddingDetails finalBid = productSold.Bids.BidItems.Last();
+                ProductDetails productSold = selling[productIndex - 1];
+                BiddingDetails finalBid = productSold.Bid;
                 Auction.SellProduct(productSold);
+                Console.WriteLine(Auction.AuthUser.Products.Products.Count());
+                Auction.AuthUser.Products.Products.Remove(productSold);
+                
                 WriteLine($"You have sold {productSold.Name} to {finalBid.BidderData.Name} for {finalBid.BidAmount}");
             }
         }

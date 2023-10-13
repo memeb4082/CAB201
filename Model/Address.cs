@@ -164,16 +164,6 @@ namespace Auction.Model
             this.postCode = int.Parse(addressData.Element("PostCode").Value);
             this.state = addressData.Element("State").Value;
         }
-        internal Address(int unitNum, int streetNum, string streetName, string streetSuffix, string city, int postCode, string state)
-        {
-            this.unitNum = unitNum;
-            this.streetNum = streetNum;
-            this.streetName = streetName;
-            this.streetSuffix = streetSuffix;
-            this.city = city;
-            this.postCode = postCode;
-            this.state = state;
-        }
         public Address()
         {
             this.unitNum = CustomInt("Unit number (0 = none):", "\tUnit number must be a non-negative integer");

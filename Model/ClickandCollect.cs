@@ -19,18 +19,33 @@ namespace Auction.Model
             );
             return XElem;
         }
+        public override string ToString()
+        {
+            return $"Collect between {startDateTime.TimeOfDay} on {startDateTime.Date} and {endDateTime.TimeOfDay} on {endDateTime.Date}";
+        }
         public ClickandCollect(decimal bidAmount) : base(bidAmount)
         {
             // TODO: Double check video for prompts
             startDateTime = CustomDateTime("Please enter start time");
             while (startDateTime.Subtract(DateTime.Now).Hours < 1)
             {
+                WriteLine("Start time must be at least one hour from now");
                 startDateTime = CustomDateTime("Please enter start time");
+                // Fixes bug with integer overflow in measurement or at least compensates for it
+                if (startDateTime.Subtract(DateTime.Now).Hours > 1)
+                {
+                    break;
+                }
             }
             endDateTime = CustomDateTime("Please enter end time");
             while (endDateTime.Subtract(startDateTime).Hours < 1)
             {
+                WriteLine("End time must be at least one hour after start time");
                 endDateTime = CustomDateTime("Please enter end time");
+                if (endDateTime.Subtract(DateTime.Now).Hours > 1)
+                {
+                    break;
+                }
             }
         }
         internal ClickandCollect(DateTime startDateTime, DateTime endDateTime, decimal bidAmount) : base(bidAmount)

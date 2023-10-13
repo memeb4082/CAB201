@@ -14,7 +14,7 @@ namespace Auction.View
         public override void Display()
         {
             ClickandCollect newBid = new ClickandCollect(BidAmount);
-            Product.Bids.Add(newBid);
+            Product.Bid = newBid;
         }
     }
 }

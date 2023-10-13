@@ -1,15 +1,15 @@
 using System.Text.RegularExpressions;
-using System.Globalization;
 namespace Auction
 {
     public class CustomUI
     {
-        public static void WriteLine(string text = ""){
+        public static void WriteLine(string text = "")
+        {
             Console.WriteLine(text);
         }
         public static void CustomMainTitle(string title)
         {
-            Console.WriteLine($"+{new string('-', title.Length+2)}+\n| {title} |\n+{new string('-', title.Length+2)}+");
+            Console.WriteLine($"+{new string('-', title.Length + 2)}+\n| {title} |\n+{new string('-', title.Length + 2)}+");
         }
         public static void CustomTitle(string title)
         {
@@ -18,7 +18,8 @@ namespace Auction
         public static string Read()
         {
             Console.Write("> ");
-            return Console.ReadLine();
+            string input = Console.ReadLine();
+            return input;
         }
         public static string CustomPassword()
         {
@@ -104,25 +105,6 @@ namespace Auction
 
             }
         }
-        public static int CustomOption(string prompt, List<int> options)
-        {
-            int input;
-            while (true)
-            {
-                WriteLine(prompt);
-                if (!int.TryParse(Read(), out input))
-                {
-                    WriteLine("Input is not a valid integer");
-                    continue;
-                }
-                if (options.IndexOf(input) == -1)
-                {
-                    WriteLine($"Please select an option from the following: {string.Join(",", options)}");
-                    continue;
-                }
-                return input;
-            }
-        }
         public static decimal CustomCurrency(string? prompt = null)
         {
             string input;
@@ -144,18 +126,18 @@ namespace Auction
         }
         public static DateTime CustomDateTime(string prompt)
         {
-
+            DateTime output;
+            string input;
             while (true)
             {
-                DateTime output;
-                string input;
                 WriteLine(prompt);
-                input = Read();
+                input = Read().Trim();
                 if (DateTime.TryParse(input, out output))
                 {
-                    return output;
+                    break;
                 }
             }
+            return output;
         }
     }
 }

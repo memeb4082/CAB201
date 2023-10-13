@@ -27,7 +27,7 @@ namespace Auction.Model
             this.fileName = fileName;
             Load();
         }
-        public Client? GetAccountMatching(string email)
+        private Client? GetAccountMatching(string email)
         {
             foreach (Client client in clients)
             {
@@ -77,34 +77,29 @@ namespace Auction.Model
                 foreach (XElement productData in productsData)
                 {
                     ProductDetails product = new ProductDetails(productData);
-                    if (productData.Descendants("Bids").Any())
+                    if (productData.Descendants("Bids").Descendants().Any())
                     {
-                        BiddingStorage bidStore = new BiddingStorage();
-                        IEnumerable<XElement> bidsData = productData.Element("Bids").Elements();
-                        foreach (XElement bidData in bidsData)
+                        XElement bidData = productData.Descendants("Bids").Descendants().FirstOrDefault();
+                        BiddingDetails bid;
+                        if (bidData.Element("Address") == null)
                         {
-                            BiddingDetails bid;
-                            if (bidData.Element("Address") == null)
-                            {
-                                bid = new ClickandCollect(
-                                    DateTime.Parse(bidData.Element("StartTime").Value),
-                                    DateTime.Parse(bidData.Element("EndTime").Value),
-                                    Decimal.Parse(bidData.Element("BidAmount").Value)
-                                );
-                            }
-                            else
-                            {
-                                bid = new DeliverProduct(
-                                    new Address(bidData.Element("Address")),
-                                    Decimal.Parse(bidData.Element("BidAmount").Value)
-                                );
-                            }
-                            bid.BidderData = new Client(
-                                bidData.Element("Client").Element("Name").Value,
-                                bidData.Element("Client").Attribute("Email").Value);
-                            bidStore.Add(bid);
+                            bid = new ClickandCollect(
+                                DateTime.Parse(bidData.Element("StartTime").Value),
+                                DateTime.Parse(bidData.Element("EndTime").Value),
+                                Decimal.Parse(bidData.Element("BidAmount").Value)
+                            );
                         }
-                        product.Bids = bidStore;
+                        else
+                        {
+                            bid = new DeliverProduct(
+                                new Address(bidData.Element("Address")),
+                                Decimal.Parse(bidData.Element("BidAmount").Value)
+                            );
+                        }
+                        bid.BidderData = new Client(
+                            bidData.Element("Client").Element("Name").Value,
+                            bidData.Element("Client").Attribute("Email").Value);
+                        product.Bid = bid;
                     }
                     productsList.Add(product);
                 }
@@ -113,17 +108,60 @@ namespace Auction.Model
             }
             if (data.Descendants("Purchased").Any())
             {
-                
+                List<ProductDetails> purchasedList = new List<ProductDetails>();
+                IEnumerable<XElement> purchasedData = data.Element("Purchased").Elements();
+                // Iterates over xelement for each purchased item and appends to purchased data array
+                foreach (XElement purchased in purchasedData)
+                {
+                    ProductDetails product = new ProductDetails(purchased);
+                    if (purchased.Descendants("Bids").Descendants().Any())
+                    {
+                        XElement bidData = purchased.Descendants("Bids").Descendants().FirstOrDefault();
+
+                        BiddingDetails bid;
+                        // Conditional statement checks for type of bid
+                        // Address only in delivery
+                        if (bidData.Element("Address") == null)
+                        {
+                            bid = new ClickandCollect(
+                                DateTime.Parse(bidData.Element("StartTime").Value),
+                                DateTime.Parse(bidData.Element("EndTime").Value),
+                                Decimal.Parse(bidData.Element("BidAmount").Value)
+                            );
+                        }
+                        else
+                        {
+                            bid = new DeliverProduct(
+                                new Address(bidData.Element("Address")),
+                                Decimal.Parse(bidData.Element("BidAmount").Value)
+                            );
+                        }
+                        bid.BidderData = new Client(
+                            bidData.Element("Seller").Element("Name").Value,
+                            bidData.Element("Seller").Attribute("Email").Value);
+                        product.Bid = bid;
+                    }
+                    purchasedList.Add(product);
+                }
+                client.ProductsOwned = purchasedList;
             }
             clients.Add(client);
         }
-
+        //<summary>
+        // Registration uses while loop to iterate while account with email exists.
+        // Uses xml to linq library to save data in a permanent format to be accessed in future sessions
+        //</summary>
         public void Register()
         {
-            // TODO: Check video for prompts
-            // TODO: Update email regex
-            // TODO: Implement if check for duplicate email necessary
-            Client client = new Client();
+            string name = CustomString("Please enter your name");
+            string email = CustomString("Please enter email", @"^[A-Za-z0-9-_]+([\.]?[A-Za-z0-9-_]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
+            while (true)
+            {
+                if (GetAccountMatching(email) == null) { break; }
+                email = CustomString("\t Email already exists, please try again", @"^[A-Za-z0-9-_]+([\.]?[A-Za-z0-9-_]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
+            }
+            string password = CustomPassword();
+            Client client = new Client(name, email, password);
             clients.Add(client);
             if (File.Exists(fileName))
             {
@@ -133,12 +171,12 @@ namespace Auction.Model
                     );
                 doc.Save(fileName);
             }
+            // Reloads client array with updated data
             Load();
             CustomTitle($"Client {client.Name}({client.Email}) has successfully registered at the Auction house.");
         }
         public Client Login()
         {
-            // TODO: Check video for prompts
             bool emailVerified = false;
             bool passwordVerified = false;
             string email;
@@ -224,28 +262,41 @@ namespace Auction.Model
                 .Where(arrg => arrg.Attribute("ID").Value == productUpdated.ProductIndex.ToString())
                 .Descendants("Bids")
                 .FirstOrDefault();
-            bids.Add(productUpdated.Bids.BidItems.Last().ToXElement());
+            if (bids.Descendants().Any())
+            {
+                bids.ReplaceWith(new XElement("Bids", ""));
+            }
+            bids.Add(productUpdated.Bid.ToXElement());
             doc.Save(fileName);
         }
         public void SellProduct(ProductDetails productSelling)
         {
-            bool isClickCollect = productSelling.Bids.BidItems.Last().GetType().ToString() == "Auction.Model.ClickandCollect";
-            XDocument doc = XDocument.Load("data.xml");
-            IEnumerable<XElement> bids = doc.Descendants("Client")
+            bool isDelivery = productSelling.Bid.GetType().ToString() == "Auction.Model.Delivery";
+            XDocument doc = XDocument.Load(fileName);
+            XElement bid = doc.Descendants("Client")
                 .Descendants("Product")
-                .Where(arrg => arrg.Attribute("ID").Value == productSelling.ProductIndex.ToString());
-            XElement finalBid = bids
-                .Descendants((isClickCollect) ? "ClickAndCollect" : "Delivery")
-                .LastOrDefault();
-            // bids.Remove();
-            doc
-                .Descendants("Client")
-                .Where(arg => arg.Attribute("Email").Value == finalBid.Element("Client").Attribute("Email").Value)
+                .Where(arrg => arrg.Attribute("ID").Value == productSelling.ProductIndex.ToString())
+                .FirstOrDefault();
+            bid.Descendants("Bids")
                 .FirstOrDefault()
-                .Element("Purchased")
-                .Add(finalBid)
+                .Element(isDelivery ? "Delivery" : "ClickAndCollect")
+                .Element("Client")
+                .ReplaceWith(
+                new XElement("Seller", new XAttribute("Email", authUser.Email),
+                        new XElement("Name", authUser.Name)
+                    )
+                );
+            doc.Descendants("Clients").Descendants("Product")
+                .Where(arrg => arrg.Attribute("ID").Value == productSelling.ProductIndex.ToString())
+                .Remove();
+            doc.Descendants("Client")
+                .Where(arg => arg.Attribute("Email").Value == productSelling.Bid.BidderData.Email)
+                .Descendants("Purchased")
+                .FirstOrDefault()
+                .Add(bid);
             doc.Save(fileName);
-
+            Load();
+            WriteLine($"You have sold {productSelling.Name} to {productSelling.Bid.BidderData.Name} for {productSelling.Bid.BidAmount}");
         }
     }
 }

@@ -19,6 +19,10 @@ namespace Auction.Model
             );
             return XElem;
         }
+        public override string ToString()
+        {
+            return $"Deliver to {deliveryAddress.ToString()}";
+        }
         public DeliverProduct(decimal bidAmount) : base(bidAmount)
         {
             this.deliveryAddress = new Address();

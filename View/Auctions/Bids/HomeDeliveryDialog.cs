@@ -14,7 +14,7 @@ namespace Auction.View
         public override void Display()
         {
             DeliverProduct newBid = new DeliverProduct(BidAmount);
-            Product.Bids.Add(newBid);
+            Product.Bid = newBid;
         }
     }
 }

@@ -34,16 +34,17 @@ namespace Auction.View
                     productIndex = CustomInt($"Please enter a non-negative integer between 1 and {buyable.Count}", "Input must be a valid integer");
                 }
                 ProductDetails selected = buyable[productIndex - 1];
-                WriteLine($"Bidding for {selected.Name} (regular price ${selected.Price}), current highest bid ${selected.Bids.GetMaxAmount().ToString()}");
+                decimal maxBid = (selected.Bid == null) ? 0.00M : selected.Bid.BidAmount;
+                WriteLine($"Bidding for {selected.Name} (regular price ${selected.Price}), current highest bid ${maxBid.ToString()}");
                 decimal bidamt = CustomCurrency("How much do you bid?");
-                while (bidamt < selected.Bids.GetMaxAmount())
+                while (bidamt < maxBid)
                 {
-                    WriteLine($"Amount must be greater than ${selected.Bids.GetMaxAmount()}");
+                    WriteLine($"Amount must be greater than ${maxBid}");
                     bidamt = CustomCurrency("How much do you bid?");
                 }
                 Menu deliveryInstructions = new DeliveryMenu(selected, bidamt);
                 deliveryInstructions.Display();
-                selected.Bids.BidItems.Last().BidderData = Auction.AuthUser;
+                selected.Bid.BidderData = Auction.AuthUser;
                 Auction.UpdateBids(selected);
              }
         }

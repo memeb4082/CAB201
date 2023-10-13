@@ -46,9 +46,10 @@ namespace Auction.Model
             get { return products; }
             set { products = value; }
         }
-        public List<ProductDetails> ProductsOwned{
+        public List<ProductDetails> ProductsOwned
+        {
             get { return productsOwned; }
-            set { productsOwned = value; }
+            set { productsOwned = value.OrderBy(p => p.Name).ToList(); }
         }
         internal XElement ToXElementBidding()
         {
@@ -74,7 +75,7 @@ namespace Auction.Model
                 .Descendants("Product")
                 .Count();
             product.ProductIndex = currID + 1;
-            products.Add(product);
+            products.Products.Add(product);
             account.Element("Products").Add(new XElement("Product",
                 new XAttribute("ID", currID + 1),
                 new XElement("Name", product.Name),
@@ -84,13 +85,29 @@ namespace Auction.Model
             ));
             doc.Save("data.xml");
         }
-        public Client()
+        public List<ProductDetails> Sellable(out string table)
         {
-            this.name = CustomString("Please enter username (must not be empty)", @"^(?!\s*$).+");
-            this.email = CustomString("Please enter email", @"^[A-Za-z0-9-_]+([\.]?[A-Za-z0-9-_]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
-            this.password = CustomPassword();
+            List<ProductDetails> sellable = new List<ProductDetails>();
+            foreach (ProductDetails product in products.Products)
+            {
+                if (product.Bid != null)
+                {
+                    sellable.Add(product);
+                }
+            }
+            sellable = sellable.OrderBy(p => p.Name).ToList();
+            table = new ProductStorage(sellable).ToString();
+            return sellable;
         }
-        internal Client(string name, string email) {
+        // Uses bool to determine if password input is necessary
+        internal Client(string name, string email, string password)
+        {
+            this.name = name;
+            this.email = email;
+            this.password = password;
+        }
+        internal Client(string name, string email)
+        {
             this.name = name;
             this.email = email;
         }

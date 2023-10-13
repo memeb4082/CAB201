@@ -14,7 +14,20 @@ namespace Auction.View
         { }
         public override void Display()
         {
-            ProductStorage stuff = Auction.ViewMyProducts();
+            if (Auction.AuthUser.ProductsOwned.Count == 0)
+            {
+                CustomTitle($"Purchased items for {Auction.AuthUser.Name}({Auction.AuthUser.Email})");
+                WriteLine("You have no purchased products at the moment.");
+                new AuctionMenu(Auction).Display();
+            }
+            string output = "";
+            for (int i = 0; i < Auction.AuthUser.ProductsOwned.Count; i++)
+            {
+                ProductDetails owned = Auction.AuthUser.ProductsOwned[i];
+                output = $"{output}{i}\t {owned.Bid.BidderData.Email}\t {owned.Name}\t {owned.Description}\t ${owned.Bid.BidAmount}\t {owned.Bid.ToString()}\n";
+            }
+            WriteLine($"Item #\t Seller Email\t Product Name\t Description\t List Price\t Amt Paid\t Delivery Option");
+            WriteLine(output);
         }
     }
 }

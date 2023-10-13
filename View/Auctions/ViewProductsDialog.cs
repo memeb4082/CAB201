@@ -14,7 +14,7 @@ namespace Auction.View
         { }
         public override void Display()
         {
-            
+            Auction.ViewMyProducts().ToString();
         }
     }
 }
